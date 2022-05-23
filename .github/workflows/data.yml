@@ -31,7 +31,7 @@ jobs:
     steps:
     
     - name: AWS Auth
-      uses: trinadh444/action-github-oidc-auth@main
+      uses: PoojaG2108/action-github-oidc-auth@main
       with:
         initial-role-to-assume: ${{ inputs.initial-role-to-assume }}
         aws-region: ${{ inputs.aws-region }}
