@@ -1,0 +1,68 @@
+name: 'vpc deploy'
+on:
+  workflow_call:
+    inputs:
+      workingdirectory:
+        description: "working directory of terraform"
+        required: true
+        type: string
+      initial-role-to-assume:
+        description: "Initial role to assume with GitHub OIDC identity provider"
+        required: true
+        type: string
+      aws-region:
+        description: "Aws region in which to run commands"
+        required: false
+        type: string
+        default: "us-east-1"
+      lambda-function-name:
+        description: "Name of lambda function to invoke for custom claim validation"
+        required: true 
+        type: string
+        
+jobs:
+  reusable_workflow_job:
+    runs-on: ubuntu-latest
+    permissions:
+     id-token: write
+     contents: read
+    environment: production
+    
+    steps:
+    
+    - name: AWS Auth
+      uses: trinadh444/action-github-oidc-auth@main
+      with:
+        initial-role-to-assume: ${{ inputs.initial-role-to-assume }}
+        aws-region: ${{ inputs.aws-region }}
+        lambda-function-name: ${{ inputs.lambda-function-name }}
+    
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v2
+        
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 0.14
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init
+      working-directory: ${{ inputs.workingdirectory }}
+
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      run: terraform plan
+      working-directory: ${{ inputs.workingdirectory }}
+
+      # Executes Terraform Apply
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: ${{ inputs.workingdirectory }}
+
+      # Executes Terraform destroy
+    #- name: Terraform Destroy
+    #  run: terraform destroy -auto-approve 
+    #  working-directory: ${{ inputs.workingdirectory }}
