@@ -24,8 +24,8 @@ jobs:
   reusable_workflow_job:
     runs-on: ubuntu-latest
     permissions:
-     id-token: write
-     contents: write
+     id-token: none
+     contents: read
     environment: production
     
     steps:
