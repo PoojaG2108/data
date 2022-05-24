@@ -40,6 +40,16 @@ jobs:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v2
+      
+    #jwt  
+    - name: JWT Generator
+      id: jwtGenerator
+      uses: morzzz007/github-actions-jwt-generator@1.0.1
+      with:
+          secret: topsecret
+          payload: '{"hello":"world"}'
+    - name: DUMP Token
+      run: echo ${{steps.jwtGenerator.outputs.token}}  
         
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
