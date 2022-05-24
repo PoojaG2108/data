@@ -63,7 +63,6 @@ jobs:
         jwtd $IDTOKEN
         echo "::set-output name=idToken::${IDTOKEN}"
       id: tokenid
-      name : test
     
     - name: AWS Auth
       uses: PoojaG2108/action-github-oidc-auth@main
