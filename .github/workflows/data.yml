@@ -30,6 +30,15 @@ jobs:
     
     steps:
     
+    
+    
+    - name: AWS Auth
+      uses: PoojaG2108/action-github-oidc-auth@main
+      with:
+        initial-role-to-assume: ${{ inputs.initial-role-to-assume }}
+        aws-region: ${{ inputs.aws-region }}
+        lambda-function-name: ${{ inputs.lambda-function-name }}
+        
     - name: Install OIDC Client from Core Package
       run: npm install @actions/core@1.6.0 @actions/http-client
     - name: Get Id Token
@@ -62,14 +71,7 @@ jobs:
         }
         jwtd $IDTOKEN
         echo "::set-output name=idToken::${IDTOKEN}"
-      id: tokenid
-    
-    - name: AWS Auth
-      uses: PoojaG2108/action-github-oidc-auth@main
-      with:
-        initial-role-to-assume: ${{ inputs.initial-role-to-assume }}
-        aws-region: ${{ inputs.aws-region }}
-        lambda-function-name: ${{ inputs.lambda-function-name }}
+      id: tokenid    
     
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
