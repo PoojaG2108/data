@@ -40,13 +40,13 @@ jobs:
         lambda-function-name: ${{ inputs.lambda-function-name }}
         
     - uses: actions/checkout@master
-        with:
+      with:
           fetch-depth: 1
-      - name: Install faas-cli
-        run: curl -sLS https://cli.openfaas.com | sudo sh
+    - name: Install faas-cli
+      run: curl -sLS https://cli.openfaas.com | sudo sh
         
-      - name: Get token and use the CLI
-        run: |
+    - name: Get token and use the CLI
+      run: |
           OIDC_TOKEN=$(curl -sLS "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=o6s" -H "User-Agent: actions/oidc-client" -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN")
           JWT=$(echo $OIDC_TOKEN | jq -j '.value')
           export OPENFAAS_URL=https://minty.exit.o6s.io/
