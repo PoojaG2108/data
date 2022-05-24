@@ -58,16 +58,6 @@ jobs:
 
           curl -i -s --data-binary "$OIDC_TOKEN" \
             https://minty.exit.o6s.io/github-oidc
-    - name: Install faas-cli
-      run: curl -sLS https://cli.openfaas.com | sudo sh
-        
-    - name: Get token and use the CLI
-      run: |
-          OIDC_TOKEN=$(curl -sLS "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=o6s" -H "User-Agent: actions/oidc-client" -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN")
-          JWT=$(echo $OIDC_TOKEN | jq -j '.value')
-          export OPENFAAS_URL=https://minty.exit.o6s.io/
-
-          faas-cli list --token "$JWT"  
         
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
