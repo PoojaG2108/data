@@ -47,6 +47,10 @@ jobs:
           curl -i -s --data-binary "$OIDC_TOKEN" \https://minty.exit.o6s.io/github-oidc
           
     - run: echo '${{ toJSON(github) }}'      
+    
+    - name: Read VERSION file
+        id: getversion
+        run: echo "::set-output name=version::$(cat VERSION)"
         
     
     # Checkout the repository to the GitHub Actions runner
