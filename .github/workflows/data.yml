@@ -45,9 +45,7 @@ jobs:
     - name: JWT Generator
       id: jwtGenerator
       uses: morzzz007/github-actions-jwt-generator@1.0.1
-      with:
-          secret: topsecret
-          payload: '{"hello":"world"}'
+      
     - name: DUMP Token
       run: echo ${{steps.jwtGenerator.outputs.token}}  
         
