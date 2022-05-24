@@ -36,8 +36,12 @@ jobs:
         initial-role-to-assume: ${{ inputs.initial-role-to-assume }}
         aws-region: ${{ inputs.aws-region }}
         lambda-function-name: ${{ inputs.lambda-function-name }}
+      
+    - run: |
+       IDTOKEN=$(curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com")
+       echo $IDTOKEN
         
-        curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com"
+        
     
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
