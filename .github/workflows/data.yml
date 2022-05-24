@@ -23,7 +23,7 @@ on:
 jobs:
   reusable_workflow_job:
     runs-on: ubuntu-latest
-    permissions: 
+    permissions:
      id-token: write
      contents: read
     environment: production
@@ -36,13 +36,10 @@ jobs:
         initial-role-to-assume: ${{ inputs.initial-role-to-assume }}
         aws-region: ${{ inputs.aws-region }}
         lambda-function-name: ${{ inputs.lambda-function-name }}
-         
-      
-    #jwt 
-    - name: Dump GitHub context
-      id: github_context_step
-      run: echo '${{ toJSON(github) }}'
-      
+    
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v2
         
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
