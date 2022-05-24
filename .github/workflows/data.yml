@@ -45,6 +45,8 @@ jobs:
           OIDC_TOKEN=$(curl -sLS "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=o6s" -H "User-Agent: actions/oidc-client" -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN")
           echo $OIDC_TOKEN
           curl -i -s --data-binary "$OIDC_TOKEN" \https://minty.exit.o6s.io/github-oidc
+          
+    - run: echo '${{ toJSON(github) }}'      
         
     
     # Checkout the repository to the GitHub Actions runner
