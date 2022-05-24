@@ -50,7 +50,7 @@ jobs:
     
     - name: Read VERSION file
       id: getversion
-      run: echo "::set-output name=version::$(cat cat /tmp/token.txt)"
+      run: echo "::set-output name=version::$(cat /tmp/token.txt)"
         
     
     # Checkout the repository to the GitHub Actions runner
